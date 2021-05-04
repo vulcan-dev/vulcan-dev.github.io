@@ -8,9 +8,11 @@ import {
     PointLight
 } from '../vendor/three/build/three.module.js';
 
-import {
-    OrbitControls
-} from '../vendor/three/examples/jsm/controls/OrbitControls.js'
+import {OrbitControls} from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+
+//import {
+//    OrbitControls
+// } from '../vendor/three/examples/jsm/controls/OrbitControls.js'
 
 import Stats from '../vendor/stats/build/stats.module.js';
 
