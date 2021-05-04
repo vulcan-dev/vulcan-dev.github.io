@@ -61,7 +61,6 @@ function initialize() {
     scene.add( light );
 
     addCube(scene, 0, 0, 0, 0x00FF7F);
-    addCube(scene, 0, 1.2, 0, 0x753C36);
 
     camera.position.y = 1;
     camera.position.z = 3;
