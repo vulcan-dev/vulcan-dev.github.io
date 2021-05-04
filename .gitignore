@@ -1,9 +1,1 @@
-.dccache
-docs/
-.github
-editor/
-examples/
-files/
-src/
-test/
-utils/
+.git
