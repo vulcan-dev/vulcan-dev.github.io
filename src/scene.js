@@ -48,7 +48,7 @@ function initialize() {
 
     scene = new Scene();
     camera = new PerspectiveCamera(_FOV, 2, _NearPlane, _FarPlane);
-    const controls = new OrbitControls(camera, renderer.domElement);
+    //const controls = new OrbitControls(camera, renderer.domElement);
     
     const planeGeometry = new BoxGeometry(30, .3, 30);
     const planeMaterial = new MeshBasicMaterial( { color: 0x3A3C46 } );
