@@ -1,4 +1,4 @@
-const serverAddress = 'http://kissmp.online:3692/0.4.4';
+const serverAddress = '//kissmp.online:3692/0.4.4';
 var serverCount = 0;
 var lastRow = -1;
 
