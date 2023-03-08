@@ -1,17 +1,1 @@
-
-# kissmp-server-list
-
-This is just a basic server list for KissMP (BeamNG Multiplayer Mod)
-
-  If you get the CORS error then there's an extension to disable it. On firefox it's called: [CORS Everywhere](https://addons.mozilla.org/en-GB/firefox/addon/cors-everywhere/)
-![Example](https://imgur.com/226w4Fl.png)
-
-As of right now there's no sorting but I plan on adding this at some point
-
-- [ ] Add sorting
-
-- [ ] Connect to server (I think it's possible)
-
-- [x] Tweak a bit of the CSS to make it look better
-
-- [ ] Add a searchbar
+As of right now, the structure of the site isn't the best but will be improved upon soon.
