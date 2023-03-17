@@ -14,6 +14,6 @@ export default defineNuxtConfig({
     },
     target: "static",
     router: {
-        base: "/vulcan-dev.github.io/",
-    }
+        base: "/"
+    },
 })
