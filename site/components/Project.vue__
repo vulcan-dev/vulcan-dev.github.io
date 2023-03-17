@@ -1,0 +1,257 @@
+<template>
+  <div class="p-4 border border-dashed">
+
+    <div class="flex flex-row" v-if="!this.$store.state.editing">
+      <div class="left-0 top-0 flex flex-col justify-start w-full">
+        <section class="flex flex-row">
+          <h2 class="text-2xl font-bold">{{ title }}
+            <span v-if="tags.length > 0" class="text-sm font-normal text-gray-500">
+            {{ tags.join(", ") }}
+          </span>
+          </h2>
+        </section>
+
+        <section class="flex flex-col">
+          <div v-html="body"></div>
+        </section>
+
+        <section>
+          <ul class="list-inside text-green-500 underline flex flex-row gap-3">
+            <li v-for="link in links">
+              <a :href="link.url">{{ link.name }}</a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="flex flex-row">
+        <span class="text-sm font-normal text-gray-500">
+          {{ status }}
+        </span>
+        </section>
+      </div>
+
+      <div v-if="this.$store.state.editing" class="flex flex-row gap-3 h-full">
+        <!--        <button class="text-green-500 font-bold underline" @click="editing = true">-->
+        <!--          Edit-->
+        <!--        </button>-->
+
+        <button class="text-red-500 font-bold underline">
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div v-else class="editingArea flex flex-col gap-3">
+      <div class="flex flex-row gap-3">
+        <input class="w-full" type="text" v-model="this.$store.getters.projects[this.id].title" placeholder="Project Title">
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <textarea class="w-full" v-model="this.$store.getters.projects[this.id].body" placeholder="Project Description"></textarea>
+      </div>
+
+      <!--      <div class="flex flex-row gap-3">-->
+      <!--        <input class="w-full" type="text" v-model="project.tags" placeholder="Languages">-->
+      <!--      </div>-->
+
+      <!--      <div class="flex flex-row gap-3">-->
+      <!--        <input class="w-full" type="text" v-model="project.links" placeholder="Links">-->
+      <!--      </div>-->
+
+      <!--   Tag Editor, loop over this.tags   -->
+      <div class="flex flex-row gap-3 flex-wrap w-full">
+        <div v-for="tag in this.$store.getters.projects[this.id].tags" class="tag mr-1 mb-1">
+          <span class="text-sm font-normal p-2 border border-dashed h-full">
+            {{ tag }}
+            <span class="ml-1 cursor-pointer" @click="removeTag(tag)">
+              x
+            </span>
+          </span>
+        </div>
+        <input class="w-full" type="text" v-model="newTag" placeholder="Tags" @keyup.enter="addTag">
+      </div>
+
+      <!-- Link Editor (name, url). Show as a list and have a button to add a new one -->
+      <div class="flex flex-col gap-3">
+        <div v-for="link in this.$store.getters.projects[this.id].links" class="tag mr-1 mb-1" v-if="this.$store.getters.projects[this.id].links.length > 0">
+          <span class="text-sm font-normal p-2 border border-dashed h-full">
+            {{ link.name }}: {{ link.url }}
+            <span class="ml-1 cursor-pointer" @click="removeLink(link)">
+              x
+            </span>
+          </span>
+        </div>
+        <div v-else class="text-sm font-normal text-gray-500">
+          No links
+        </div>
+
+        <div v-if="addingLink" class="flex flex-row gap-3">
+          <input class="w-full" type="text" v-model="link.name" placeholder="Link Name">
+          <input class="w-full" type="text" v-model="link.url" placeholder="Link URL">
+          <button class="text-green-500 font-bold underline" @click="addLink">
+            Add
+          </button>
+          <button class="text-red-500 font-bold underline" @click="cancelLink">
+            Cancel
+          </button>
+        </div>
+
+        <!-- Create a '+' button, small on left side -->
+        <div v-else class="flex flex-row gap-3">
+          <button class="p-2 cursor-pointer border border-dashed" @click="addingLink = true">
+            Add Link
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <input class="w-full" type="text" v-model="this.$store.getters.projects[this.id].status" placeholder="Status">
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <button class="text-red-500 font-bold underline" @click="cancel">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Project",
+  props: {
+    id: { // project id
+      type: Number,
+      required: true
+    },
+
+    title: { // project name
+      type: String,
+      required: true
+    },
+
+    body: { // project description
+      type: String,
+      required: true
+    },
+
+    tags: { // languages used
+      type: Array,
+      required: true
+    },
+
+    links: { // links to project
+      type: Array,
+      required: true
+    },
+
+    status: { // project state
+      type: String,
+      required: true
+    },
+
+    onSaved: {
+      type: Function,
+      required: false
+    }
+  },
+  data() {
+    return {
+      // project: {
+      //   title: this.title,
+      //   body: this.body,
+      //   tags: this.tags,
+      //   links: this.links,
+      //   status: this.status
+      // },
+      backup: {},
+      newTag: "",
+      link: {
+        name: "",
+        url: ""
+      },
+      addingLink: false
+    }
+  },
+  mounted() {
+    this.backup = JSON.parse(JSON.stringify(this.$store.getters.projects[this.id]))
+  },
+  methods: {
+    saveProject() {
+      this.$store.dispatch('projects/saveProject', this.project).then((data) => {
+        this.onSaved(this.project)
+      }).catch((error) => {
+        console.log("error: ", error)
+      });
+    },
+    cancel() {
+      this.project = JSON.parse(JSON.stringify(this.backup))
+      this.newTag = ""
+      this.link = {
+        name: "",
+        url: ""
+      }
+      this.addingLink = false
+    },
+    addTag() {
+      // this.project.tags.push(this.newTag)
+      this.$store.dispatch('projects/addTag', {id: this.id, tag: this.newTag})
+      this.newTag = ""
+    },
+    removeTag(tag) {
+      // this.project.tags = this.project.tags.filter((t) => t !== tag)
+      this.$store.dispatch('projects/removeTag', {id: this.id, tag: tag})
+    },
+    addLink() {
+      if (this.link.name === "" || this.link.url === "") {
+        return
+      }
+
+      let urlRegex = new RegExp(/^(http|https):\/\/[a-zA-Z0-9-\.]+\.[a-z]{2,4}/)
+      if (!urlRegex.test(this.link.url)) {
+        return
+      }
+
+      // this.project.links.push(this.link)
+      this.$store.dispatch('projects/addLink', {id: this.id, link: this.link})
+      this.link = {
+        name: "",
+        url: ""
+      }
+      this.addingLink = false
+    },
+    removeLink(link) {
+      // this.project.links = this.project.links.filter((l) => l !== link)
+      this.$store.dispatch('projects/removeLink', {id: this.id, link: link})
+    },
+    cancelLink() {
+      this.link = {
+        name: "",
+        url: ""
+      }
+      this.addingLink = false
+    }
+  }
+}
+</script>
+
+<style scoped>
+textarea {
+  background-color: rgba(0, 0, 0, 0.0);
+  border: 1px dotted #ccc;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.editingArea > div > input {
+  padding: 0.5rem;
+}
+
+.editingArea > div > textarea {
+  padding: 0.5rem;
+  height: 100px;
+}
+</style>
