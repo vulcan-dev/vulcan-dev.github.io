@@ -10,4 +10,10 @@
 import store from "~/store";
 const config = useRuntimeConfig();
 store.dispatch("user/checkAuth");
+
+useHead({
+  meta: [
+    { name: "Content-Security-Policy", content: "upgrade-insecure-requests" },
+  ],
+});
 </script>
