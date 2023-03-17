@@ -13,7 +13,10 @@ store.dispatch("user/checkAuth");
 
 useHead({
   meta: [
-    { name: "Content-Security-Policy", content: "upgrade-insecure-requests" },
+    {
+      "http-equiv": "Content-Security-Policy",
+      content: "upgrade-insecure-requests",
+    }
   ],
 });
 </script>
