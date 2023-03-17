@@ -11,12 +11,12 @@ import store from "~/store";
 const config = useRuntimeConfig();
 store.dispatch("user/checkAuth");
 
-useHead({
-  meta: [
-    {
-      "http-equiv": "Content-Security-Policy",
-      content: "upgrade-insecure-requests",
-    }
-  ],
-});
+// useHead({
+//   meta: [
+//     {
+//       "http-equiv": "Content-Security-Policy",
+//       content: "upgrade-insecure-requests",
+//     }
+//   ],
+// });
 </script>
