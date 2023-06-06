@@ -51,7 +51,6 @@ const actions = {
         });
 
         const resp = await response.json();
-        console.log(resp);
         if (resp.data && resp.data.session) {
             commit('setLoggedIn', true);
             commit('setToken', resp.data.session.token);

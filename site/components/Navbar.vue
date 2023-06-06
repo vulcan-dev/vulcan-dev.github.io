@@ -4,7 +4,7 @@
       <div class="flex flex-row gap-3">
         <router-link to="/">Home</router-link>
         <router-link to="/projects">Projects</router-link>
-        <router-link to="/blog">Blog</router-link>
+        <!--<router-link to="/blog">Blog</router-link>-->
       </div>
 
       <div class="flex flex-row gap-3">
@@ -40,6 +40,11 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('user/logout');
+      if (this.$store.getters['editing/editing']) {
+        this.$store.dispatch('editing/setCreatingProject', false);
+        this.$store.dispatch('editing/setEditing', false);
+        this.$store.dispatch('projects/disregardAllStagedChanges');
+      }
     },
     save() {
       this.$store.dispatch('projects/saveProjects');

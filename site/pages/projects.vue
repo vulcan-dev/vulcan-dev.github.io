@@ -18,6 +18,7 @@
     <div v-else class="py-2 flex flex-col gap-4">
       <ul class="flex flex-col gap-4">
         <li v-for="project in projects" :key="project.id">
+          <!-- Expanded -->
           <div v-if="expanded.includes(project.id)" class="flex flex-col gap-4">
             <Project
                 :id="project.id"
@@ -25,12 +26,12 @@
             ></Project>
 
             <button @click="expanded = expanded.filter(id => id !== project.id)"
-                    class="p-2 text-white font-bold border border-dashed hover:border-green-500"
-                    v-if="!$store.getters['editing/editing']">
+                    class="p-2 text-white font-bold border border-dashed hover:border-green-500">
               Collapse
             </button>
           </div>
 
+          <!-- Collapsed -->
           <div v-else class="flex flex-row w-full gap-4 border border-dashed items-center p-2
             hover:cursor-pointer hover:border-green-500"
                @click="expanded.push(project.id)">
@@ -40,25 +41,39 @@
         </li>
       </ul>
     </div>
+
+    <!--  Markdown test  -->
   </div>
 </template>
 
 <script>
+import MdEditor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+
+useHead({
+  title: "Projects · Daniel W",
+})
+
 export default {
   name: "projects",
   mounted() {
-    this.loadProjects()
+    this.$store.dispatch('projects/getProjects')
+  },
+  // set title again once the page is loaded
+  updated() {
+    useHead({
+      title: "Projects · Daniel W",
+    })
   },
   data() {
     return {
       expanded: [],
+      testMarkdown: "# Hello, World!"
     }
   },
   computed: {
     isLoggedIn() {
-      let loggedIn = this.$store.getters.user.loggedIn
-      console.log('isLoggedIn: ', loggedIn)
-      return this.$store.getters.user.loggedIn;
+      return this.$store.getters['user/loggedIn']
     },
     projects() {
       return this.$store.getters['projects/projects']
@@ -69,16 +84,9 @@ export default {
       if (process.env.NODE_ENV === 'development') {
         if (this.projects == null) {
           this.$store.dispatch('editing/setEditing', false)
-        } else {
-          console.log('projects updated: ', this.projects)
         }
       }
     }
-  },
-  methods: {
-    loadProjects() {
-      this.$store.dispatch('projects/getProjects')
-    },
   }
 }
 </script>

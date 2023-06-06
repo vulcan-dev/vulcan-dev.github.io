@@ -17,15 +17,25 @@
 
       <p class="text-lg">Overall, I am a dedicated and skilled software developer with a passion for creating software that meets the needs of others. My experience in game engine development, general-purpose software, and reverse engineering has helped me develop a strong understanding of software development and a keen eye for detail.</p>
     </div>
+
+    <!--  Test Markdown  -->
+<!--    <ContentSlot :use="$slots.default" unwrap="true">-->
+<!--      # Hello, World!-->
+<!--    </ContentSlot>-->
   </div>
 </template>
 
 <script>
+useHead({
+  title: "Home · Daniel W",
+})
+
 export default {
-name: "index"
+  name: "HomePage",
+  updated() {
+    useHead({
+      title: "Home · Daniel W",
+    })
+  },
 }
 </script>
-
-<style scoped>
-
-</style>
