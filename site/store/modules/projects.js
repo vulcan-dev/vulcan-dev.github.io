@@ -43,7 +43,6 @@ const actions = {
             return;
         }
 
-        console.log(resp.projects);
         commit('setProjects', resp.projects);
     },
 
@@ -113,8 +112,6 @@ const actions = {
             console.log('No projects found');
             return;
         }
-
-        console.log(resp.projects);
 
         commit('setProjects', resp.projects);
     },
@@ -188,6 +185,11 @@ const actions = {
 
         await this.dispatch('projects/getProjects');
     },
+
+    disregardAllStagedChanges({commit}) {
+        commit('setStagedCount', 0);
+        commit('setStagedProjects', []);
+    }
 }
 
 const getters = {

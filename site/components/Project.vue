@@ -46,8 +46,8 @@
       </div>
     </div>
 
-    <!--  Not editing  -->
-    <div v-else class="editingArea flex flex-col gap-3">
+    <!--  Editing  -->
+    <div v-else class="editingArea flex flex-col gap-3" v-if="this.$store.getters['user/loggedIn']">
       <div class="flex flex-row gap-3">
         <input class="w-full" type="text" v-model="project.title" placeholder="Project Title">
       </div>
@@ -182,6 +182,12 @@ export default {
       }
     }
     this.backup = JSON.parse(JSON.stringify(this.project))
+  },
+  watch: {
+    '$store.getters.user.loggedIn': function (loggedIn) {
+      if (loggedIn) return; // We don't care if they logged in
+      this.reset()
+    }
   },
   methods: {
     reset() {
