@@ -32,7 +32,7 @@
 
             <ul class="list-inside text-green-500 underline gap-3">
               <li v-for="link in project.links" :key="link.id">
-                <a :href="link.url">{{ link.name }}</a>
+                <a :href="link.url" target="_blank">{{ link.name }}</a>
               </li>
             </ul>
           </div>

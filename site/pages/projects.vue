@@ -32,11 +32,11 @@
           </div>
 
           <!-- Collapsed -->
-          <div v-else class="flex flex-row w-full gap-4 border border-dashed items-center p-2
+          <div v-else class="flex flex-row gap-2 w-full border border-dashed items-center p-2
             hover:cursor-pointer hover:border-green-500"
                @click="expanded.push(project.id)">
-            <h2 class="text-xl font-bold">{{ project.title }}</h2>
-            <div v-html="project.body"></div>
+            <h2 class="text-xl font-bold whitespace-nowrap">{{ project.title }}</h2>
+            <div v-html="project.body" class="project__body"></div>
           </div>
         </li>
       </ul>
@@ -92,5 +92,11 @@ export default {
 </script>
 
 <style scoped>
-
+.project__body {
+    overflow: hidden;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
 </style>
